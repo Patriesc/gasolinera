@@ -12,7 +12,7 @@ public class Gasolinera implements Runnable {
     private List<Coche> coches;
     private Iterator<Long> times;
 
-    public Gasolinera(int numCoches) {
+    public Gasolinera(int numCoches) throws Exception {
         if (numCoches < 2) {
             throw new IllegalArgumentException("Introduce más de un coche");
         }
@@ -28,8 +28,10 @@ public class Gasolinera implements Runnable {
         }
         for (int i = 0; i < numCoches; ++i) {
 
+
             Coche p = new Coche(this);
             coches.add(p);
+
         }
     }
 
