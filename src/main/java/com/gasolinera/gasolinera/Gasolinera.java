@@ -17,9 +17,9 @@ public class Gasolinera implements Runnable {
             throw new IllegalArgumentException("Introduce más de un coche");
         }
 
-        this.surtidores = new ArrayList<>();
+        this.surtidores = new ArrayList<>(4);
         this.coches = new ArrayList<>();
-        this.times = new Random().longs(1000, 5000).iterator();
+        this.times = new Random().longs(5, 10).iterator();
 
 
         for (int i = 0; i < numCoches; ++i) {

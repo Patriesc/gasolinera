@@ -3,6 +3,8 @@ package com.gasolinera.gasolinera;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Queue;
+
 public class Coche implements Runnable {
 
     private static Logger logger = LoggerFactory.getLogger(Coche.class);
@@ -10,6 +12,7 @@ public class Coche implements Runnable {
     private String nombre;
     private Gasolinera gasolinera;
     private Surtidor surtidor;
+    private Queue cola;
 
     public Coche(String nombre, Gasolinera gasolinera) {
         this.nombre = nombre;
@@ -40,8 +43,9 @@ public class Coche implements Runnable {
 
 
     private void pagar() throws InterruptedException {
-        logger.info("El coche {} está pagando", nombre);
-        Thread.sleep(gasolinera.getTime());
+        long time;
+        logger.info("El coche {} está pagando (3minutos)", nombre);
+        spendTime(3);
         logger.info("El coche {} ha pagado", nombre);
     }
 
@@ -55,7 +59,7 @@ public class Coche implements Runnable {
  */
 
     private void spendTime(long time) throws InterruptedException {
-        Thread.sleep(time);
+        Thread.sleep(time * 1000);
     }
 
 }
