@@ -19,17 +19,16 @@ public class Gasolinera implements Runnable {
 
         this.surtidores = new ArrayList<>(4);
         this.coches = new ArrayList<>();
-        this.times = new Random().longs(5, 10).iterator();
+        this.times = new Random().longs(5000, 10000).iterator();
 
 
-        for (int i = 0; i < numCoches; ++i) {
+        for (int i = 0; i < 5; ++i) {
             Surtidor f = new Surtidor();
             surtidores.add(f);
         }
         for (int i = 0; i < numCoches; ++i) {
-            int n = (i + 1) % numCoches;
 
-            Coche p = new Coche("Coche " + (i + 1), this);
+            Coche p = new Coche(this);
             coches.add(p);
         }
     }
@@ -54,5 +53,6 @@ public class Gasolinera implements Runnable {
         for (Coche c : coches) {
             executorService.submit(c);
         }
+
     }
 }

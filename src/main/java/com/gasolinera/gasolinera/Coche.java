@@ -5,25 +5,38 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Queue;
 
+
+
 public class Coche implements Runnable {
 
     private static Logger logger = LoggerFactory.getLogger(Coche.class);
+    public static int id = 0;
 
-    private String nombre;
+    {
+        id++;
+    }
+
+    private int nombre;
     private Gasolinera gasolinera;
     private Surtidor surtidor;
-    private Queue cola;
+    private boolean haRepostado =false;
 
-    public Coche(String nombre, Gasolinera gasolinera) {
-        this.nombre = nombre;
+    public Coche(Gasolinera gasolinera) {
+        this.nombre = Coche.id;
         this.gasolinera = gasolinera;
+
+
     }
 
     public void run() {
         while (true) {
             try {
-                repostar();
-                pagar();
+                if(!haRepostado){
+                    repostar();
+                    pagar();
+                    salir();
+                }
+
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
@@ -47,6 +60,13 @@ public class Coche implements Runnable {
         logger.info("El coche {} está pagando (3minutos)", nombre);
         spendTime(3);
         logger.info("El coche {} ha pagado", nombre);
+        this.haRepostado = true;
+
+
+    }
+
+    private void salir() throws InterruptedException {
+
     }
 
 /*
@@ -61,6 +81,11 @@ public class Coche implements Runnable {
     private void spendTime(long time) throws InterruptedException {
         Thread.sleep(time * 1000);
     }
+
+    public int getNombre() {
+        return nombre;
+    }
+
 
 }
 
