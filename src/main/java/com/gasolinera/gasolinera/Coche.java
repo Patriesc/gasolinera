@@ -72,7 +72,9 @@ public class Coche implements Runnable {
         Thread.sleep(time * 1000);
     }
 
-
+    public boolean getHaRepostado() {
+        return haRepostado;
+    }
 }
 
 
