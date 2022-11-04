@@ -6,18 +6,18 @@ import java.util.Queue;
 public class Semaphore {
 
     private int counter;
-    private Queue<Threads> queue = new LinkedList<>();
+    private Queue<Hilos> queue = new LinkedList<>();
 
-    public Semaphore( int permits ){
+    public Semaphore(int permits) {
         counter = permits;
     }
 
-    public void acquire(String name, Threads obj){
+    public void acquire(String name, Hilos obj) {
         synchronized (this) {
             counter--;
         }
-        if ( counter < 0  ){
-            System.out.println(name + " Waiting in the Queue");
+        if (counter < 0) {
+            System.out.println(name + " esperando en la cola");
 
             try {
                 queue.add(obj);
@@ -28,11 +28,11 @@ public class Semaphore {
         }
     }
 
-    public void release(){
+    public void release() {
         counter++;
 
-        if ( !queue.isEmpty() ){
-            Threads customer = queue.remove();
+        if (!queue.isEmpty()) {
+            Hilos customer = queue.remove();
             customer.interrupt();
         }
 

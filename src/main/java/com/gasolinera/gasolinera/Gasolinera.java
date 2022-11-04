@@ -1,77 +1,70 @@
 package com.gasolinera.gasolinera;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
-public class Gasolinera implements Runnable {
-    private List<Surtidor> surtidores;
-    private List<Coche> coches;
-    private Iterator<Long> times;
+public class Gasolinera {
 
-    public Gasolinera(int numCoches) throws Exception {
-        if (numCoches < 2) {
-            throw new IllegalArgumentException("Introduce más de un coche");
-        }
+    private int numSurtidores;
+    private Hilos[] surtidores;
+    public static Semaphore semaphore;
+    private Random rand;
 
-        this.surtidores = new ArrayList<>(4);
-        this.coches = new ArrayList<>();
-        this.times = new Random().longs(5000, 10000).iterator();
-
-
-        for (int i = 0; i < 5; ++i) {
-            Surtidor f = new Surtidor();
-            surtidores.add(f);
-        }
-        for (int i = 0; i < numCoches; ++i) {
-
-
-            Coche p = new Coche(this);
-            coches.add(p);
-
-        }
+    public Gasolinera(int numSurtidores) {
+        this.numSurtidores = numSurtidores;
+        semaphore = new Semaphore(numSurtidores);
+        surtidores = new Hilos[numSurtidores];
+        rand = new Random();
     }
 
-    public Surtidor buscarSurtidorLibre() {
-        for (Surtidor surtidor : surtidores) {
-            if (!surtidor.isHeld()) {
-                return surtidor;
+    public synchronized void arrived(Hilos client) {
+        System.out.println(client.clientName + " llegó");
+    }
+
+    public synchronized int ocuparSurtidor(Hilos client) {
+        int i;
+        for (i = 0; i < numSurtidores; i++) {
+            if (surtidores[i] == null) {
+                System.out.println(client.clientName + " ocupó el surtidor " + (i + 1));
+                surtidores[i] = client;
+                semaphore.acquire(client.clientName, surtidores[i]);
+                break;
             }
         }
-        return null;
+        return i;
     }
 
-
-
-    public synchronized long getTime() {
-        return times.next();
+    public synchronized void repostar(Hilos client, int index) {
+        System.out.println(client.clientName + " está repostando");
+        GasolineraApplication.gui.setColorYellow(index, client.clientName + " está repostando");
+        try {
+            client.sleep(rand.nextInt(5000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void run() {
-        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(coches.size());
+    public synchronized void paying(Hilos client, int index) {
+        System.out.println(client.clientName + " está pagando");
+        GasolineraApplication.gui.setColorGreen(index, client.clientName + " está pagando");
+        try {
+            client.sleep(rand.nextInt(1000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
-        executorService.scheduleAtFixedRate(() -> {
-            for (Coche coche : coches) {
-                executorService.submit(coche);
-
-                if(coche.getHaRepostado()){
-                    coches.remove(coche);
-
-                }
-
-                if(coches.size()==0){
-                    executorService.shutdownNow();
-
-                }
-
-
+    public synchronized void leaving(Hilos client, int index) {
+        System.out.println(client.clientName + " is leaving");
+        for (int i = 0; i < numSurtidores; i++) {
+            if (surtidores[i] != null && surtidores[i].clientName == client.clientName) {
+                surtidores[i] = null;
             }
-        }, 0, 1, java.util.concurrent.TimeUnit.SECONDS);
-
-
+        }
+        GasolineraApplication.gui.setColorRed(index, client.clientName + " se está yendo");
+        semaphore.release();
     }
+
 }
+
+
