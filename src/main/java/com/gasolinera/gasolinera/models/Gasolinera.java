@@ -57,7 +57,7 @@ public class Gasolinera {
     }
 
     public synchronized void leaving(Hilos client, int index) {
-        System.out.println(client.clientName + " is leaving");
+        System.out.println(client.clientName + " se está yendo");
         for (int i = 0; i < numSurtidores; i++) {
             if (surtidores[i] != null && surtidores[i].clientName == client.clientName) {
                 surtidores[i] = null;
