@@ -1,4 +1,6 @@
-package com.gasolinera.gasolinera;
+package com.gasolinera.gasolinera.models;
+
+import com.gasolinera.gasolinera.models.Gasolinera;
 
 public class Hilos extends Thread {
 

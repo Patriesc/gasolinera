@@ -1,22 +1,22 @@
-package com.gasolinera.gasolinera;
+package com.gasolinera.gasolinera.views;
 
+import com.gasolinera.gasolinera.models.Gasolinera;
+import com.gasolinera.gasolinera.models.Hilos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-@SpringBootApplication
-public class GasolineraApplication {
-    private static Logger logger = LoggerFactory.getLogger(com.gasolinera.gasolinera.GasolineraApplication.class);
+public class Lanzador {
+    private static Logger logger = LoggerFactory.getLogger(Lanzador.class);
     public static int numSurtidores;
     public static int numClientes;
     public static ArrayList<String> clientes = new ArrayList<>();
     public static Gasolinera gasolinera;
     public static GUI gui;
 
-    public static void main(String[] args) {
+    public static void lanzador() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Introduce el número de surtidores: ");
 

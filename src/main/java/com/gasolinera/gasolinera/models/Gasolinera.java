@@ -1,5 +1,7 @@
-package com.gasolinera.gasolinera;
+package com.gasolinera.gasolinera.models;
 
+
+import com.gasolinera.gasolinera.views.Lanzador;
 
 import java.util.Random;
 
@@ -36,7 +38,7 @@ public class Gasolinera {
 
     public synchronized void repostar(Hilos client, int index) {
         System.out.println(client.clientName + " está repostando");
-        GasolineraApplication.gui.setColorYellow(index, client.clientName + " está repostando");
+        Lanzador.gui.setColorYellow(index, client.clientName + " está repostando");
         try {
             client.sleep(rand.nextInt(5000));
         } catch (InterruptedException e) {
@@ -46,7 +48,7 @@ public class Gasolinera {
 
     public synchronized void paying(Hilos client, int index) {
         System.out.println(client.clientName + " está pagando");
-        GasolineraApplication.gui.setColorGreen(index, client.clientName + " está pagando");
+        Lanzador.gui.setColorGreen(index, client.clientName + " está pagando");
         try {
             client.sleep(rand.nextInt(1000));
         } catch (InterruptedException e) {
@@ -61,7 +63,7 @@ public class Gasolinera {
                 surtidores[i] = null;
             }
         }
-        GasolineraApplication.gui.setColorRed(index, client.clientName + " se está yendo");
+        Lanzador.gui.setColorRed(index, client.clientName + " se está yendo");
         semaphore.release();
     }
 

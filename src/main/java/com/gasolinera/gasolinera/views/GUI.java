@@ -1,4 +1,4 @@
-package com.gasolinera.gasolinera;
+package com.gasolinera.gasolinera.views;
 
 
 import javax.swing.*;
