@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class Gasolinera implements Runnable {
     private List<Surtidor> surtidores;
@@ -51,10 +52,26 @@ public class Gasolinera implements Runnable {
     }
 
     public void run() {
-        ExecutorService executorService = Executors.newFixedThreadPool(coches.size());
-        for (Coche c : coches) {
-            executorService.submit(c);
-        }
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(coches.size());
+
+        executorService.scheduleAtFixedRate(() -> {
+            for (Coche coche : coches) {
+                executorService.submit(coche);
+
+                if(coche.getHaRepostado()){
+                    coches.remove(coche);
+
+                }
+
+                if(coches.size()==0){
+                    executorService.shutdownNow();
+
+                }
+
+
+            }
+        }, 0, 1, java.util.concurrent.TimeUnit.SECONDS);
+
 
     }
 }

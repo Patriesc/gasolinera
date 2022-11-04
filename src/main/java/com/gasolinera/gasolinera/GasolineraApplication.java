@@ -12,10 +12,10 @@ public class GasolineraApplication {
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(GasolineraApplication.class, args);
 		logger.info("Abriendo gasolinera...");
-		Gasolinera gasolinera = new Gasolinera(10);
+		Gasolinera gasolinera = new Gasolinera(5);
 		Thread servicio = new Thread(gasolinera);
 
-		logger.info("Empezado servicio...");
+		logger.info("Empezando servicio...");
 		servicio.start();
 		servicio.join();
 	}
